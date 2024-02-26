@@ -1,0 +1,96 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix doap:    <http://usefulinc.com/ns/doap#> .
+@prefix fno:     <https://w3id.org/function/ontology#> .
+@prefix fnoi:    <https://w3id.org/function/vocabulary/implementation#> .
+@prefix fnom:    <https://w3id.org/function/vocabulary/mapping#> .
+@prefix grel:    <http://users.ugent.be/~bjdmeest/function/grel.ttl#> .
+@prefix grelm:   <http://fno.io/grel/rmlmapping#> .
+@prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:     <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix oco:     <https://w3id.org/oc/ontology/> .
+
+oco:precise_match a fno:Function ;
+  fno:name "precise_match" ;
+  rdfs:label "precise_match" ;
+  dcterms:description "Matches string against a regex pattern and returns the capturing groups." ;
+  fno:expects ( grel:valueParam grel:param_regex grel:param_replace ) ;
+  fno:returns ( grel:stringOut ) .
+
+oco:dateWithDatatype a fno:Function ;
+  fno:name "dateWithDatatype" ;
+  rdfs:label "Date with Datatype" ;
+  dcterms:description "Transforms a date string to a date object with appropriate XSD datatype." ;
+  fno:expects ( grel:valueParam ) ;
+  fno:returns ( grel:stringOut ) .
+
+oco:labelToURI a fno:Function ;
+  fno:name "labelToURI" ;
+  rdfs:label "Label to URI" ;
+  dcterms:description "Maps a given label to its corresponding URI based on predefined mappings." ;
+  fno:expects ( grel:valueParam ) ;
+  fno:returns ( grel:stringOut ) .
+
+grel:valueParam
+    a             fno:Parameter ;
+    fno:name      "s" ;
+    rdfs:label    "s" ;
+    fno:predicate grel:valueParameter ;
+    fno:type      xsd:string ;
+    fno:required  "true"^^xsd:boolean .
+
+grel:param_regex
+    a             fno:Parameter ;
+    fno:name      "p" ;
+    rdfs:label    "p" ;
+    fno:predicate grel:p_string_regex ;
+    fno:type      xsd:string ;
+    fno:required  "true"^^xsd:boolean .
+
+grel:param_replace
+    a             fno:Parameter ;
+    fno:name      "r" ;
+    rdfs:label    "r" ;
+    fno:predicate grel:p_string_replace ;
+    fno:type      xsd:string ;
+    fno:required  "true"^^xsd:boolean .
+
+grel:output_array
+    a             fno:Output ;
+    fno:name      "array" ;
+    rdfs:label    "array" ;
+    fno:predicate grel:o_array ;
+    fno:type      rdf:List .
+
+grel:stringOut
+    a             fno:Output ;
+    fno:name      "output string" ;
+    rdfs:label    "output string" ;
+    fno:predicate grel:stringOutput ;
+    fno:type      xsd:string .
+
+grelm:javaString
+    a                  fnoi:JavaClass ;
+    doap:download-page "rml-mapping/target/rml-mapping-1.0-SNAPSHOT-jar-with-dependencies.jar" ;
+    fnoi:class-name    "com.opencitations.CustomFunctions" .
+
+grelm:precise_match
+    a                    fno:Mapping ;
+    fno:function         oco:precise_match ;
+    fno:implementation   grelm:javaString ;
+    fno:methodMapping    [ a                fnom:Function ;
+                           fnom:method-name "precise_match" ] .
+
+grelm:dateWithDatatype
+    a                    fno:Mapping ;
+    fno:function         oco:dateWithDatatype ;
+    fno:implementation   grelm:javaString ;
+    fno:methodMapping    [ a                fnom:Function ;
+                           fnom:method-name "dateWithDatatype" ] .
+
+grelm:labelToURI
+    a                    fno:Mapping ;
+    fno:function         oco:labelToURI ;
+    fno:implementation   grelm:javaString ;
+    fno:methodMapping    [ a                fnom:Function ;
+                           fnom:method-name "labelToURI" ] .
